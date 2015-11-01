@@ -1,0 +1,106 @@
+import random
+
+cells = [(0, 2), (1, 2), (2, 2),
+         (0, 1), (1, 1), (2, 1),
+         (0, 0), (1, 0), (2, 0)]
+
+
+def get_location():
+    player = random.choice(cells)
+    door = random.choice(cells)
+    monster = random.choice(cells)
+
+    if player == door or player == monster or door == monster:
+        return get_location()
+
+    return player, door, monster
+
+
+def get_moves(player):
+
+    moves = ["UP", "DOWN", "LEFT", "RIGHT"]
+    #player = (x,y)
+
+    if player[0] == 0:
+        moves.remove("LEFT")
+    if player[0] == 2:
+        moves.remove("RIGHT")
+    if player[1] == 0:
+        moves.remove("DOWN")
+    if player[1] == 2:
+        moves.remove("UP")
+    return moves
+
+
+def move_player(player, move):
+    x, y = player
+
+    if move == "UP":
+        y += 1
+    elif move == "DOWN":
+        y -= 1
+    elif move == "LEFT":
+        x -= 1
+    elif move == "RIGHT":
+        x += 1
+    return x, y
+
+
+def draw_map(player):
+    print " _  _  _"
+    tile = "|{}"
+
+    for index, cell in enumerate(cells):
+        if index in [0, 1, 3, 4, 6, 7]:
+            if cell == player:
+                print tile.format("X"),
+            else:
+                print tile.format("_"),
+        else:
+            if cell == player:
+                print tile.format("X|")
+            else:
+                print tile.format("_|")
+
+player, door, monster = get_location()
+print "Welcome to the game!"
+print "Enter HINT to cheat ^^"
+print "Enter QUIT to quit"
+
+words = ["UP", "DOWN", "LEFT", "RIGHT"]
+
+while True:
+    moves = get_moves(player)
+
+    print "You're now in room{}".format(player)
+
+    draw_map(player)
+
+    print "You can move {}".format(moves)
+
+    move = raw_input('> ')
+    move = move.upper()
+
+    if move == "QUIT":
+        break
+
+    if move == "HINT":
+        print "Door is in {}.".format(door)
+        print "Monster is in {}.".format(monster)
+        continue
+
+    if move in moves:
+        player = move_player(player, move)  # good move
+    elif move in words:
+        print "** Walls are hard, stop walking into them! **"
+    else:
+        print "** You can only move! **"  # bad move
+        continue
+
+    if player == door:
+        print "You escaped!"
+        break
+
+    elif player == monster:
+        print "You were eaten by the grue!"
+        break
