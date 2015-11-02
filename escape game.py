@@ -7,6 +7,7 @@ cells = [(0, 2), (1, 2), (2, 2),
 
 logging.basicConfig(filename='game.log', level=logging.DEBUG)
 
+
 def get_location():
     player = random.choice(cells)
     door = random.choice(cells)
@@ -95,11 +96,11 @@ while True:
         continue
 
     if move in moves:
-        player = move_player(player, move)  # good move
+        player = move_player(player, move)
     elif move in words:
         print "** Walls are hard, stop walking into them! **"
     else:
-        print "** You can only move! **"  # bad move
+        print "** You can only move! **"
         continue
 
     if player == door:
