@@ -1,9 +1,11 @@
 import random
+import logging
 
 cells = [(0, 2), (1, 2), (2, 2),
          (0, 1), (1, 1), (2, 1),
          (0, 0), (1, 0), (2, 0)]
 
+logging.basicConfig(filename='game.log', level=logging.DEBUG)
 
 def get_location():
     player = random.choice(cells)
@@ -19,7 +21,6 @@ def get_location():
 def get_moves(player):
 
     moves = ["UP", "DOWN", "LEFT", "RIGHT"]
-    #player = (x,y)
 
     if player[0] == 0:
         moves.remove("LEFT")
@@ -63,8 +64,13 @@ def draw_map(player):
                 print tile.format("_|")
 
 player, door, monster = get_location()
+
+logging.info('monster: {}; door: {}; player: {}'.format(
+    monster, door, player))
+
 print "Welcome to the game!"
-print "Enter HINT to cheat ^^"
+print "Find door to escape. Be careful of the monster."
+print "Enter HINT to know where the monster is."
 print "Enter QUIT to quit"
 
 words = ["UP", "DOWN", "LEFT", "RIGHT"]
@@ -85,8 +91,7 @@ while True:
         break
 
     if move == "HINT":
-        print "Door is in {}.".format(door)
-        print "Monster is in {}.".format(monster)
+        print "You hear a voice...'Monster is in {}.'".format(monster)
         continue
 
     if move in moves:
