@@ -1,3 +1,4 @@
+import os
 import random
 import logging
 
@@ -64,6 +65,11 @@ def draw_map(player):
             else:
                 print tile.format("_|")
 
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 player, door, monster = get_location()
 
 logging.info('monster: {}; door: {}; player: {}'.format(
@@ -71,8 +77,6 @@ logging.info('monster: {}; door: {}; player: {}'.format(
 
 print "Welcome to the game!"
 print "Find door to escape. Be careful of the monster."
-print "Enter HINT to know where the monster is."
-print "Enter QUIT to quit"
 
 words = ["UP", "DOWN", "LEFT", "RIGHT"]
 
@@ -80,6 +84,8 @@ while True:
     moves = get_moves(player)
 
     print "You're now in room{}".format(player)
+    print "Enter HINT to know where the monster is."
+    print "Enter QUIT to quit"
 
     draw_map(player)
 
@@ -92,21 +98,37 @@ while True:
         break
 
     if move == "HINT":
-        print "You hear a voice...'Monster is in {}.'".format(monster)
+        clear()
+        print "-----------------------------------------------"
+        print "You hear a voice...'Monster is in {}.".format(monster)
+        print "-----------------------------------------------"
         continue
 
     if move in moves:
         player = move_player(player, move)
     elif move in words:
-        print "** Walls are hard, stop walking into them! **"
+        clear()
+        print "-----------------------------------------------"
+        print " ** Walls are hard, stop walking into them! **"
+        print "-----------------------------------------------"
+        continue
     else:
+        clear()
+        print "-----------------------------------------------"
         print "** You can only move! **"
+        print "-----------------------------------------------"
         continue
 
     if player == door:
+        print "*************"
         print "You escaped!"
+        print "*************"
         break
 
     elif player == monster:
+        print "xxxxxxxxxxxxxxxxxxxxxxxxxxx"
         print "You were eaten by the grue!"
+        print "xxxxxxxxxxxxxxxxxxxxxxxxxxx"
         break
+
+    clear()
